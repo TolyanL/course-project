@@ -1,6 +1,7 @@
 # Backend Agent Plan: «Электронное расписание»
 
 ## Цель
+
 Реализовать полноценный backend на Golang/Fiber с PostgreSQL для системы электронного расписания.
 
 ---
@@ -8,6 +9,7 @@
 ## Фаза 1: Инфраструктура
 
 ### 1.1 Docker Compose
+
 - [ ] PostgreSQL с volume для данных
 - [ ] Backend сервис (Golang/Fiber)
 - [ ] Общая сеть между сервисами
@@ -35,6 +37,7 @@ backend/
 ```
 
 ### Задачи:
+
 - [ ] Инициализировать Go модуль
 - [ ] Создать структуру папок
 - [ ] Подключить зависимости: Fiber, pgx, jwt, godotenv
@@ -46,6 +49,7 @@ backend/
 ### 3.1 migrations/001_init.sql
 
 Создать таблицы:
+
 - [ ] `teachers` (id, name, login, password_hash, role, created_at)
 - [ ] `subjects` (id, name)
 - [ ] `classrooms` (id, number)
@@ -54,6 +58,7 @@ backend/
 - [ ] Добавить seed для admin (login/password из ENV с fallback на dev)
 
 ### 3.2 SQL функции для валидации
+
 - [ ] Функция проверки занятости аудитории
 - [ ] Функция проверки занятости преподавателя
 
@@ -75,31 +80,35 @@ backend/
 ## Фаза 5: API эндпоинты
 
 ### 5.1 Auth
-| Метод | URL | Описание |
-|-------|-----|----------|
-| POST | /api/auth/login | Вход (login + password → JWT) |
+
+| Метод | URL             | Описание                      |
+| ----- | --------------- | ----------------------------- |
+| POST  | /api/auth/login | Вход (login + password → JWT) |
 
 ### 5.2 Schedule
-| Метод | URL | Роль | Описание |
-|-------|-----|------|----------|
-| GET | /api/schedule | all | Фильтры: date, group_id, teacher_id |
-| POST | /api/schedule/entries | teacher/admin | Добавить пару |
-| PUT | /api/schedule/entries/:id | teacher/admin | Редактировать |
-| DELETE | /api/schedule/entries/:id | teacher/admin | Удалить |
+
+| Метод  | URL                       | Роль          | Описание                            |
+| ------ | ------------------------- | ------------- | ----------------------------------- |
+| GET    | /api/schedule             | all           | Фильтры: date, group_id, teacher_id |
+| POST   | /api/schedule/entries     | teacher/admin | Добавить пару                       |
+| PUT    | /api/schedule/entries/:id | teacher/admin | Редактировать                       |
+| DELETE | /api/schedule/entries/:id | teacher/admin | Удалить                             |
 
 ### 5.3 CRUD справочников
-| Сущность | GET | POST | PUT | DELETE |
-|----------|-----|------|-----|--------|
-| teachers | /api/teachers | /api/teachers | /api/teachers/:id | /api/teachers/:id |
-| subjects | /api/subjects | /api/subjects | /api/subjects/:id | /api/subjects/:id |
+
+| Сущность   | GET             | POST            | PUT                 | DELETE              |
+| ---------- | --------------- | --------------- | ------------------- | ------------------- |
+| teachers   | /api/teachers   | /api/teachers   | /api/teachers/:id   | /api/teachers/:id   |
+| subjects   | /api/subjects   | /api/subjects   | /api/subjects/:id   | /api/subjects/:id   |
 | classrooms | /api/classrooms | /api/classrooms | /api/classrooms/:id | /api/classrooms/:id |
-| groups | /api/groups | /api/groups | /api/groups/:id | /api/groups/:id |
+| groups     | /api/groups     | /api/groups     | /api/groups/:id     | /api/groups/:id     |
 
 ---
 
 ## Фаза 6: Валидация накладок (КРИТИЧНО!)
 
 ### При добавлении/изменении пары:
+
 1. [ ] Проверить: аудитория свободна в этот день+пару (SQL запрос)
 2. [ ] Проверить: преподаватель свободен в этот день+пару (SQL запрос)
 3. [ ] Если конфликт → вернуть warning с деталями
@@ -141,12 +150,12 @@ backend/
 
 ## Критические моменты
 
-| # | Момент | Решение |
-|---|--------|---------|
-| 1 | Накладки по аудитории/преподавателю | SQL CHECK при INSERT/UPDATE + валидация в handlers |
-| 2 | Проверка конфликтов для teacher с force save | API возвращает warning, frontend сам решит |
-| 3 | Ожидание PostgreSQL | Healthcheck + retry в коде |
-| 4 | Пароль админа | ENV файл с fallback для dev |
+| #   | Момент                                       | Решение                                            |
+| --- | -------------------------------------------- | -------------------------------------------------- |
+| 1   | Накладки по аудитории/преподавателю          | SQL CHECK при INSERT/UPDATE + валидация в handlers |
+| 2   | Проверка конфликтов для teacher с force save | API возвращает warning, frontend сам решит         |
+| 3   | Ожидание PostgreSQL                          | Healthcheck + retry в коде                         |
+| 4   | Пароль админа                                | ENV файл с fallback для dev                        |
 
 ---
 
@@ -159,3 +168,4 @@ github.com/golang-jwt/jwt/v5
 github.com/joho/godotenv
 golang.org/x/crypto (bcrypt)
 ```
+
