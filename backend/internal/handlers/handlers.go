@@ -265,6 +265,16 @@ func (h *Handler) GetSchedule(c fiber.Ctx) error {
 	groupID, _ := strconv.Atoi(c.Query("group_id", "0"))
 	teacherID, _ := strconv.Atoi(c.Query("teacher_id", "0"))
 	date := c.Query("date")
+	startDate := c.Query("start_date")
+	endDate := c.Query("end_date")
+
+	if startDate != "" && endDate != "" {
+		schedules, err := h.svc.GetScheduleByDateRange(c.Context(), groupID, teacherID, startDate, endDate)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+		}
+		return c.JSON(schedules)
+	}
 
 	schedules, err := h.svc.GetSchedule(c.Context(), groupID, teacherID, date)
 	if err != nil {

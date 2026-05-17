@@ -9,8 +9,19 @@ import (
 	"course-project/internal/service"
 )
 
+var pubRoutes = []string{
+	"/api/groups",
+	"/api/schedule",
+	"/api/auth/login",
+}
+
 func AuthMiddleware(svc *service.Service) fiber.Handler {
 	return func(c fiber.Ctx) error {
+		path := c.Path()
+		if slices.Contains(pubRoutes, path) {
+			return c.Next()
+		}
+
 		authHeader := c.Get("Authorization")
 		if authHeader == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{

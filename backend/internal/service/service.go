@@ -150,7 +150,11 @@ func (s *Service) DeleteGroup(ctx context.Context, id int) error {
 }
 
 func (s *Service) GetSchedule(ctx context.Context, groupID, teacherID int, date string) ([]models.Schedule, error) {
-	schedules, err := s.repo.GetScheduleByFilters(ctx, groupID, teacherID, date)
+	return s.GetScheduleByDateRange(ctx, groupID, teacherID, date, date)
+}
+
+func (s *Service) GetScheduleByDateRange(ctx context.Context, groupID, teacherID int, startDate, endDate string) ([]models.Schedule, error) {
+	schedules, err := s.repo.GetScheduleByDateRange(ctx, groupID, teacherID, startDate, endDate)
 	if err != nil {
 		return nil, err
 	}

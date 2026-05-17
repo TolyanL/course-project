@@ -82,8 +82,13 @@ func main() {
 
 	protected := api.Group("", middleware.AuthMiddleware(svc))
 
+	protected.Get("/groups", h.GetGroups)
+	protected.Post("/groups", middleware.RoleMiddleware("admin"), h.CreateGroup)
+	protected.Put("/groups/:id", middleware.RoleMiddleware("admin"), h.UpdateGroup)
+	protected.Delete("/groups/:id", middleware.RoleMiddleware("admin"), h.DeleteGroup)
+
+	protected.Get("/schedule", h.GetSchedule)
 	schedule := protected.Group("/schedule")
-	schedule.Get("", h.GetSchedule)
 	schedule.Post("/entries", middleware.RoleMiddleware("teacher", "admin"), h.CreateScheduleEntry)
 	schedule.Put("/entries/:id", middleware.RoleMiddleware("teacher", "admin"), h.UpdateScheduleEntry)
 	schedule.Delete("/entries/:id", middleware.RoleMiddleware("teacher", "admin"), h.DeleteScheduleEntry)
@@ -105,12 +110,6 @@ func main() {
 	classrooms.Post("", middleware.RoleMiddleware("admin"), h.CreateClassroom)
 	classrooms.Put("/:id", middleware.RoleMiddleware("admin"), h.UpdateClassroom)
 	classrooms.Delete("/:id", middleware.RoleMiddleware("admin"), h.DeleteClassroom)
-
-	groups := protected.Group("/groups")
-	groups.Get("", h.GetGroups)
-	groups.Post("", middleware.RoleMiddleware("admin"), h.CreateGroup)
-	groups.Put("/:id", middleware.RoleMiddleware("admin"), h.UpdateGroup)
-	groups.Delete("/:id", middleware.RoleMiddleware("admin"), h.DeleteGroup)
 
 	go func() {
 		if err := app.Listen(":" + cfg.ServerPort); err != nil {

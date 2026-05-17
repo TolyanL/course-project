@@ -230,6 +230,10 @@ func (r *Repository) GetOrCreateSchedule(ctx context.Context, groupID int, date 
 }
 
 func (r *Repository) GetScheduleByFilters(ctx context.Context, groupID int, teacherID int, date string) ([]models.Schedule, error) {
+	return r.GetScheduleByDateRange(ctx, groupID, teacherID, date, date)
+}
+
+func (r *Repository) GetScheduleByDateRange(ctx context.Context, groupID int, teacherID int, startDate, endDate string) ([]models.Schedule, error) {
 	query := `
 		SELECT s.id, s.group_id, s.date::text, g.name
 		FROM schedules s
@@ -248,9 +252,14 @@ func (r *Repository) GetScheduleByFilters(ctx context.Context, groupID int, teac
 		args = append(args, teacherID)
 		idx++
 	}
-	if date != "" {
-		query += fmt.Sprintf(" AND s.date = $%d", idx)
-		args = append(args, date)
+	if startDate != "" {
+		query += fmt.Sprintf(" AND s.date >= $%d", idx)
+		args = append(args, startDate)
+		idx++
+	}
+	if endDate != "" {
+		query += fmt.Sprintf(" AND s.date <= $%d", idx)
+		args = append(args, endDate)
 	}
 
 	query += " ORDER BY s.date"
