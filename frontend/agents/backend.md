@@ -75,6 +75,9 @@ Get schedule entries. Requires Bearer token.
 ]
 ```
 
+- ?date=2025-05-17 - конкретная дата
+- ?start_date=2025-05-17&end_date=2025-05-23 - диапазон (неделя)
+
 ### POST /api/schedule/entries
 
 Create schedule entry. Requires Bearer token. Role: teacher, admin.
