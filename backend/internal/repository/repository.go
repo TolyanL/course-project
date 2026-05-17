@@ -240,7 +240,7 @@ func (r *Repository) GetScheduleByFilters(ctx context.Context, groupID int, teac
 		FROM schedules s
 		JOIN groups g ON g.id = s.group_id
 		WHERE 1=1`
-	args := []interface{}{}
+	args := []any{}
 	idx := 1
 
 	if groupID > 0 {
