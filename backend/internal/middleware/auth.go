@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"slices"
 	"strings"
 
 	"github.com/gofiber/fiber/v3"
@@ -42,10 +43,8 @@ func AuthMiddleware(svc *service.Service) fiber.Handler {
 func RoleMiddleware(roles ...string) fiber.Handler {
 	return func(c fiber.Ctx) error {
 		userRole := c.Locals("role").(string)
-		for _, role := range roles {
-			if userRole == role {
-				return c.Next()
-			}
+		if slices.Contains(roles, userRole) {
+			return c.Next()
 		}
 		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
 			"error": "insufficient permissions",

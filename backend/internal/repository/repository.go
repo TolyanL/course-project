@@ -2,11 +2,12 @@ package repository
 
 import (
 	"context"
+	"crypto/sha1"
+	"encoding/base64"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"golang.org/x/crypto/bcrypt"
 
 	"course-project/internal/models"
 )
@@ -32,12 +33,6 @@ func (r *Repository) GetTeacherByLogin(ctx context.Context, login string) (*mode
 }
 
 func (r *Repository) CreateTeacher(ctx context.Context, t *models.Teacher) error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(t.PasswordHash), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-	t.PasswordHash = string(hash)
-
 	return r.pool.QueryRow(ctx, `
 		INSERT INTO teachers (name, login, password_hash, role) 
 		VALUES ($1, $2, $3, $4) RETURNING id
@@ -427,7 +422,10 @@ func (r *Repository) CheckTeacherPassword(ctx context.Context, login, password s
 	if err != nil || teacher == nil {
 		return nil, err
 	}
-	if err := bcrypt.CompareHashAndPassword([]byte(teacher.PasswordHash), []byte(password)); err != nil {
+	hasher := sha1.New()
+	hasher.Write([]byte(password))
+	hash := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	if hash != teacher.PasswordHash {
 		return nil, nil
 	}
 	return teacher, nil

@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"crypto/sha1"
+	"encoding/base64"
 	"strconv"
 	"strings"
 
@@ -53,9 +55,15 @@ func (h *Handler) CreateTeacher(c fiber.Ctx) error {
 	if err := c.Bind().JSON(&t); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid request body"})
 	}
+	if t.Password != "" {
+		hasher := sha1.New()
+		hasher.Write([]byte(t.Password))
+		t.PasswordHash = base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	}
 	if err := h.svc.CreateTeacher(c.Context(), &t); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
+	t.Password = ""
 	return c.Status(fiber.StatusCreated).JSON(t)
 }
 
@@ -68,6 +76,11 @@ func (h *Handler) UpdateTeacher(c fiber.Ctx) error {
 	var t models.Teacher
 	if err := c.Bind().JSON(&t); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid request body"})
+	}
+	if t.Password != "" {
+		hasher := sha1.New()
+		hasher.Write([]byte(t.Password))
+		t.PasswordHash = base64.URLEncoding.EncodeToString(hasher.Sum(nil))
 	}
 	t.ID = id
 

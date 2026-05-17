@@ -4,9 +4,9 @@ INSERT INTO teachers (name, login, password_hash, role)
 VALUES (
     'Administrator',
     'admin',
-    '$2a$10$kKish/UoNreWtEqcMrPfvOW7EmKOJJ/uFanpVc3vE/RSQFJqQXLKu',
+    'jLIjfQZ5yojbZGTqxg2pY0VROWQ=',
     'admin'
-) ON CONFLICT (login) DO NOTHING;
+) ON CONFLICT (login) DO UPDATE SET password_hash = 'jLIjfQZ5yojbZGTqxg2pY0VROWQ=';
 -- +goose StatementEnd
 
 -- +goose Down

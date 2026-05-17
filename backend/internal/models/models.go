@@ -6,6 +6,7 @@ type Teacher struct {
 	ID           int       `json:"id"`
 	Name         string    `json:"name"`
 	Login        string    `json:"login"`
+	Password     string    `json:"password,omitempty"`
 	PasswordHash string    `json:"-"`
 	Role         string    `json:"role"`
 	CreatedAt    time.Time `json:"created_at"`
