@@ -17,8 +17,7 @@ var pubRoutes = []string{
 
 func AuthMiddleware(svc *service.Service) fiber.Handler {
 	return func(c fiber.Ctx) error {
-		path := c.Path()
-		if slices.Contains(pubRoutes, path) {
+		if c.Method() == "GET" && slices.Contains(pubRoutes, c.Path()) {
 			return c.Next()
 		}
 
@@ -53,7 +52,12 @@ func AuthMiddleware(svc *service.Service) fiber.Handler {
 
 func RoleMiddleware(roles ...string) fiber.Handler {
 	return func(c fiber.Ctx) error {
-		userRole := c.Locals("role").(string)
+		userRole, ok := c.Locals("role").(string)
+		if !ok {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "authentication required",
+			})
+		}
 		if slices.Contains(roles, userRole) {
 			return c.Next()
 		}
