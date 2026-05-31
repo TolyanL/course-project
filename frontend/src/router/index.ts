@@ -28,7 +28,12 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: '/admin/teachers',
+          redirect: '/admin/schedule',
+        },
+        {
+          path: 'schedule',
+          name: 'admin-schedule',
+          component: () => import('@/views/AdminScheduleView.vue'),
         },
         {
           path: 'teachers',
