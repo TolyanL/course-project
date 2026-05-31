@@ -9,6 +9,7 @@ const props = defineProps<{
   startDate?: string
   endDate?: string
   showActions?: boolean
+  currentTeacherId?: number
 }>()
 
 const emit = defineEmits<{
@@ -53,7 +54,10 @@ function formatDateShort(date: Date): string {
 }
 
 function formatDateISO(date: Date): string {
-  return date.toISOString().split('T')[0] ?? ''
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
 }
 
 const weeks = computed<WeekData[]>(() => {
@@ -72,7 +76,7 @@ const weeks = computed<WeekData[]>(() => {
 
     const monday = getMonday(start)
     const sunday = addDays(monday, 6)
-    const todayStr = new Date().toISOString().split('T')[0]
+    const todayStr = formatDateISO(new Date())
 
     const weeksMap: Map<string, WeekData> = new Map()
 
@@ -178,7 +182,7 @@ function generateWeekFromRange(
 
 function generateDays(monday: Date, entries: ScheduleEntry[]): DayData[] {
   const days: DayData[] = []
-  const todayStr = new Date().toISOString().split('T')[0]
+  const todayStr = formatDateISO(new Date())
 
   for (let i = 0; i < 7; i++) {
     const dayDate = addDays(monday, i)
@@ -289,7 +293,7 @@ function generateDays(monday: Date, entries: ScheduleEntry[]): DayData[] {
                         </span>
                       </div>
                     </div>
-                    <div v-if="showActions" class="pair-actions">
+                    <div v-if="showActions && Number(pair.teacher_id) === Number(currentTeacherId)" class="pair-actions">
                       <Button
                         icon="pi pi-pencil"
                         severity="info"
