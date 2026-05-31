@@ -24,43 +24,59 @@ const selectedWeek = ref<WeekOption | null>(null)
 const weeks = computed<WeekOption[]>(() => {
   const result: WeekOption[] = []
   const today = new Date()
-  const todayStr = today.toISOString().split('T')[0] ?? ''
-  
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+
   for (let i = -5; i <= 5; i++) {
     const date = new Date(today)
     date.setDate(today.getDate() + i * 7)
-    
+
     const day = date.getDay()
     const mondayDiff = day === 0 ? -6 : 1 - day
-    
+
     const monday = new Date(date)
     monday.setDate(date.getDate() + mondayDiff)
-    
+
     const sunday = new Date(monday)
     sunday.setDate(monday.getDate() + 6)
-    
+
     const formatDate = (d: Date): string => {
-      return d.toISOString().split('T')[0] ?? ''
+      const y = d.getFullYear()
+      const m = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      return `${y}-${m}-${day}`
     }
-    
+
     const startStr = formatDate(monday)
     const endStr = formatDate(sunday)
-    
+
     const dayOfMonth = monday.getDate()
-    const monthNames = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
+    const monthNames = [
+      'янв',
+      'фев',
+      'мар',
+      'апр',
+      'май',
+      'июн',
+      'июл',
+      'авг',
+      'сен',
+      'окт',
+      'ноя',
+      'дек',
+    ]
     const month = monthNames[monday.getMonth()]
-    
+
     const weekNum = getWeekNumber(monday)
     const year = monday.getFullYear()
-    
+
     result.push({
       label: `${dayOfMonth} ${month} (${weekNum} нед., ${year})`,
       start_date: startStr,
       end_date: endStr,
-      isCurrent: startStr <= todayStr && todayStr <= endStr
+      isCurrent: startStr <= todayStr && todayStr <= endStr,
     })
   }
-  
+
   return result
 })
 
@@ -69,22 +85,26 @@ function getWeekNumber(date: Date): number {
   const dayNum = d.getUTCDay() || 7
   d.setUTCDate(d.getUTCDate() + 4 - dayNum)
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
+  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
 }
 
 if (weeks.value.length > 5) {
   selectedWeek.value = weeks.value[5] ?? null
 }
 
-watch([selectedWeek, selectedGroupId], () => {
-  if (!selectedWeek.value) return
-  
-  emit('filterChange', {
-    start_date: selectedWeek.value.start_date,
-    end_date: selectedWeek.value.end_date,
-    group_id: selectedGroupId.value,
-  })
-}, { immediate: true })
+watch(
+  [selectedWeek, selectedGroupId],
+  () => {
+    if (!selectedWeek.value) return
+
+    emit('filterChange', {
+      start_date: selectedWeek.value.start_date,
+      end_date: selectedWeek.value.end_date,
+      group_id: selectedGroupId.value,
+    })
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -122,10 +142,6 @@ watch([selectedWeek, selectedGroupId], () => {
 </template>
 
 <style scoped>
-.filter-bar {
-  background: #f8f9fa;
-}
-
 .current-week {
   font-weight: 600;
   color: #0d6efd;
