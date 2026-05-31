@@ -18,7 +18,7 @@ const filterEndDate = ref<string>('')
 const weekStartDate = computed((): string => {
   if (currentWeekStart.value) return currentWeekStart.value
   const today = new Date()
-  return today.toISOString().split('T')[0] as string
+  return toDateString(today)
 })
 
 function getMonday(date: Date): Date {
@@ -29,7 +29,10 @@ function getMonday(date: Date): Date {
 }
 
 function toDateString(date: Date): string {
-  return date.toISOString().split('T')[0] as string
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
 }
 
 async function loadWeekSchedule(dateStr: string) {
@@ -51,7 +54,7 @@ async function loadWeekSchedule(dateStr: string) {
 onMounted(async () => {
   const { data } = await groupsApi.getAll()
   groups.value = data
-  await loadWeekSchedule(new Date().toISOString().split('T')[0] as string)
+  await loadWeekSchedule(toDateString(new Date()))
 })
 
 async function handleFilterChange(filters: {
