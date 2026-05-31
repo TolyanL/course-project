@@ -17,7 +17,7 @@ const authStore = useAuthStore()
 </script>
 
 <template>
-  <Dialog :visible="true" header="Конфликт" :modal="true" :closable="false" :style="{ width: '400px' }">
+  <Dialog :visible="true" header="Конфликт" :modal="true" :closable="false" class="conflict-dialog">
     <div class="conflicts mb-3">
       <div
         v-for="(detail, index) in details"
@@ -40,3 +40,25 @@ const authStore = useAuthStore()
     </div>
   </Dialog>
 </template>
+
+<style>
+.conflict-dialog .p-dialog {
+  width: 90vw;
+  max-width: 400px;
+  margin: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .conflict-dialog .p-dialog {
+    width: 95vw;
+    max-width: none;
+    margin: 0.25rem;
+  }
+
+  .conflict-dialog .p-dialog-content {
+    padding: 0.75rem;
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+}
+</style>

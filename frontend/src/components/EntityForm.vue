@@ -34,8 +34,10 @@ watch(
   (data) => {
     if (data) {
       const newForm: Record<string, string> = {}
-      for (const key in data) {
-        newForm[key] = String(data[key] ?? '')
+      for (const field of props.fields) {
+        if (field.key in data) {
+          newForm[field.key] = String(data[field.key] ?? '')
+        }
       }
       form.value = newForm
     } else {
@@ -62,7 +64,7 @@ function handleCancel() {
     :visible="visible"
     :header="isEdit ? 'Редактирование' : 'Добавление'"
     :modal="true"
-    :style="{ width: '400px' }"
+    class="entity-form-dialog"
     @update:visible="emit('update:visible', $event)"
   >
     <form @submit.prevent="handleSubmit">
@@ -109,5 +111,27 @@ function handleCancel() {
 }
 :deep(.p-password-input) {
   width: 100%;
+}
+</style>
+
+<style>
+.entity-form-dialog .p-dialog {
+  width: 90vw;
+  max-width: 400px;
+  margin: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .entity-form-dialog .p-dialog {
+    width: 95vw;
+    max-width: none;
+    margin: 0.25rem;
+  }
+
+  .entity-form-dialog .p-dialog-content {
+    padding: 0.75rem;
+    overflow-y: auto;
+    max-height: 80vh;
+  }
 }
 </style>

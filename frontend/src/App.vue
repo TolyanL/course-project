@@ -67,6 +67,9 @@ function goToSchedule() {
   padding: 0;
   box-sizing: border-box;
 }
+html, body {
+  height: 100%;
+}
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -74,7 +77,7 @@ body {
   color: #333;
 }
 #app {
-  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -94,5 +97,34 @@ body {
 .main-content {
   flex: 1;
   padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .app-header :deep(.p-menubar) {
+    padding: 0.5rem 0.75rem;
+  }
+  .app-header :deep(.p-menubar-start) .p-button {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+  .app-header :deep(.p-menubar-end) .d-flex {
+    gap: 0.5rem;
+  }
+  .app-header :deep(.p-menubar-end) .p-button .p-button-label {
+    display: none;
+  }
+  .app-header :deep(.p-menubar-end) span {
+    font-size: 0.8rem;
+  }
+  .main-content {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header :deep(.p-menubar-start) .p-button {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.5rem;
+  }
 }
 </style>

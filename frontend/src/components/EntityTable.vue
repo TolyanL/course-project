@@ -58,4 +58,24 @@ const emit = defineEmits<{
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.entity-table :deep(.p-datatable) {
+  overflow-x: auto;
+}
+
+.entity-table :deep(.p-datatable-wrapper) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .entity-table {
+    padding: 0.75rem;
+  }
+
+  .table-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
 </style>
