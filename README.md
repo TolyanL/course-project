@@ -1,4 +1,4 @@
-# Electronic Schedule (Electronnoe Raspisanie)
+# Electronic Schedule
 
 A full-stack university schedule management system. Admins manage teachers, subjects, classrooms, groups, and the weekly timetable. Teachers view and edit their own schedule entries with conflict detection. The public can browse any group's schedule without authentication.
 
