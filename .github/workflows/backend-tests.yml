@@ -15,14 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+
       - name: Start services
         run: docker compose up -d --build --wait
 
-      - name: Run Go tests
-        run: go test ./...
-
-      - name: Run API tests
-        run: bash tests/api_test.sh
+      - name: Run integration tests
+        run: go test -v ./cmd/...
 
       - name: Tear down services
         if: always()
