@@ -31,6 +31,10 @@ export const useAuthStore = defineStore('auth', () => {
       if (payload?.user_id) {
         teacherId.value = payload.user_id
       }
+      if (payload?.login) {
+        name.value = payload.login
+        localStorage.setItem('name', payload.login)
+      }
 
       return { success: true }
     } catch (e) {
@@ -73,6 +77,7 @@ export const useAuthStore = defineStore('auth', () => {
     name.value = null
     localStorage.removeItem('token')
     localStorage.removeItem('role')
+    localStorage.removeItem('name')
   }
 
   function initFromStorage() {
@@ -81,11 +86,20 @@ export const useAuthStore = defineStore('auth', () => {
       role.value = storedRole
     }
 
+    const storedName = localStorage.getItem('name')
+    if (storedName) {
+      name.value = storedName
+    }
+
     const storedToken = localStorage.getItem('token')
     if (storedToken && !teacherId.value) {
       const payload = decodeTokenPayload(storedToken)
       if (payload?.user_id) {
         teacherId.value = payload.user_id
+      }
+      if (payload?.login && !storedName) {
+        name.value = payload.login
+        localStorage.setItem('name', payload.login)
       }
     }
   }
