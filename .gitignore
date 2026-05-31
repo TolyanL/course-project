@@ -61,6 +61,6 @@ __screenshots__/
 *.timestamp-*-*.mjs
 
 # Agents & task files
-agents/
+agents
 task.md
 plan.md
