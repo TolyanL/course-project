@@ -22,7 +22,7 @@ jobs:
       - name: Start services
         run: docker compose up -d --build --wait
 
-      - name: Run integration tests
+      - name: Run tests
         run: go test -v ./cmd/...
 
       - name: Tear down services
