@@ -4,7 +4,7 @@ set -e
 
 BASE_URL="${BASE_URL:-http://localhost:8080}"
 ADMIN_LOGIN="admin"
-ADMIN_PASSWORD="admin123"
+ADMIN_PASSWORD="12345"
 
 cleanup_all() {
   docker exec -i schedule_db psql -U postgres -d schedule_db -c "
@@ -115,4 +115,3 @@ fi
 
 echo ""
 echo "=== All tests completed! ==="
-
