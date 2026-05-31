@@ -67,7 +67,8 @@ function goToSchedule() {
   padding: 0;
   box-sizing: border-box;
 }
-html, body {
+html,
+body {
   height: 100%;
 }
 body {

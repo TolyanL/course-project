@@ -35,7 +35,7 @@ api.interceptors.response.use(
       window.location.href = '/login'
     }
     return Promise.reject(error)
-  }
+  },
 )
 
 export const authApi = {
@@ -44,11 +44,15 @@ export const authApi = {
 }
 
 export const scheduleApi = {
-  getSchedule: (params?: { group_id?: number; teacher_id?: number; date?: string; start_date?: string; end_date?: string }) =>
-    api.get<ScheduleEntry[]>('/schedule', { params }),
+  getSchedule: (params?: {
+    group_id?: number
+    teacher_id?: number
+    date?: string
+    start_date?: string
+    end_date?: string
+  }) => api.get<ScheduleEntry[]>('/schedule', { params }),
 
-  createEntry: (data: PairFormData) =>
-    api.post<{ entry: Pair }>('/schedule/entries', data),
+  createEntry: (data: PairFormData) => api.post<{ entry: Pair }>('/schedule/entries', data),
 
   updateEntry: (id: number, data: PairFormData) =>
     api.put<{ entry: Pair }>(`/schedule/entries/${id}`, data),
@@ -61,8 +65,7 @@ export const teachersApi = {
 
   create: (data: TeacherFormData) => api.post<Teacher>('/teachers', data),
 
-  update: (id: number, data: Partial<TeacherFormData>) =>
-    api.put<Teacher>(`/teachers/${id}`, data),
+  update: (id: number, data: Partial<TeacherFormData>) => api.put<Teacher>(`/teachers/${id}`, data),
 
   delete: (id: number) => api.delete(`/teachers/${id}`),
 }
@@ -72,8 +75,7 @@ export const subjectsApi = {
 
   create: (data: SubjectFormData) => api.post<Subject>('/subjects', data),
 
-  update: (id: number, data: SubjectFormData) =>
-    api.put<Subject>(`/subjects/${id}`, data),
+  update: (id: number, data: SubjectFormData) => api.put<Subject>(`/subjects/${id}`, data),
 
   delete: (id: number) => api.delete(`/subjects/${id}`),
 }
@@ -83,8 +85,7 @@ export const classroomsApi = {
 
   create: (data: ClassroomFormData) => api.post<Classroom>('/classrooms', data),
 
-  update: (id: number, data: ClassroomFormData) =>
-    api.put<Classroom>(`/classrooms/${id}`, data),
+  update: (id: number, data: ClassroomFormData) => api.put<Classroom>(`/classrooms/${id}`, data),
 
   delete: (id: number) => api.delete(`/classrooms/${id}`),
 }
@@ -94,8 +95,7 @@ export const groupsApi = {
 
   create: (data: GroupFormData) => api.post<Group>('/groups', data),
 
-  update: (id: number, data: GroupFormData) =>
-    api.put<Group>(`/groups/${id}`, data),
+  update: (id: number, data: GroupFormData) => api.put<Group>(`/groups/${id}`, data),
 
   delete: (id: number) => api.delete(`/groups/${id}`),
 }

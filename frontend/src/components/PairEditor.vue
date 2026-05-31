@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import type { Group, Subject, Classroom, Teacher, Pair, PairFormData, ConflictDetail } from '@/types'
+import type {
+  Group,
+  Subject,
+  Classroom,
+  Teacher,
+  Pair,
+  PairFormData,
+  ConflictDetail,
+} from '@/types'
 import { PAIR_TIMES } from '@/types'
 import { useScheduleStore } from '@/stores/schedule'
 import ConflictModal from './ConflictModal.vue'
@@ -56,7 +64,7 @@ watch(
       }
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 watch(
@@ -66,7 +74,7 @@ watch(
       form.value.group_id = id
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 watch(
@@ -76,7 +84,7 @@ watch(
       form.value.teacher_id = id
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 watch(
@@ -86,7 +94,7 @@ watch(
       form.value.date = new Date(date)
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 function getDateString(date: Date | string | undefined): string {
@@ -148,7 +156,7 @@ const isValid = computed(() => {
 
 function handleSave() {
   const dateStr = getDateString(form.value.date)
-  
+
   emit('save', {
     group_id: form.value.group_id,
     date: dateStr,
@@ -161,7 +169,7 @@ function handleSave() {
 
 function handleForceSave() {
   const dateStr = getDateString(form.value.date)
-  
+
   emit('save', {
     group_id: form.value.group_id,
     date: dateStr,
@@ -174,10 +182,12 @@ function handleForceSave() {
   showConflictModal.value = false
 }
 
-defineExpose({ showConflict: (details: ConflictDetail[]) => {
-  conflicts.value = details
-  showConflictModal.value = true
-} })
+defineExpose({
+  showConflict: (details: ConflictDetail[]) => {
+    conflicts.value = details
+    showConflictModal.value = true
+  },
+})
 </script>
 
 <template>
@@ -185,7 +195,14 @@ defineExpose({ showConflict: (details: ConflictDetail[]) => {
     <form @submit.prevent="handleSave">
       <div class="mb-3" v-if="!hideGroupField">
         <label class="form-label">Группа</label>
-        <Select v-model="form.group_id" :options="groups" optionLabel="name" optionValue="id" placeholder="Выберите группу" class="w-100" />
+        <Select
+          v-model="form.group_id"
+          :options="groups"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Выберите группу"
+          class="w-100"
+        />
       </div>
       <div class="mb-3">
         <label class="form-label">Дата</label>
@@ -193,19 +210,46 @@ defineExpose({ showConflict: (details: ConflictDetail[]) => {
       </div>
       <div class="mb-3">
         <label class="form-label">Предмет</label>
-        <Select v-model="form.subject_id" :options="subjects" optionLabel="name" optionValue="id" placeholder="Выберите предмет" class="w-100" />
+        <Select
+          v-model="form.subject_id"
+          :options="subjects"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Выберите предмет"
+          class="w-100"
+        />
       </div>
       <div class="mb-3" v-if="!hideTeacherField">
         <label class="form-label">Преподаватель</label>
-        <Select v-model="form.teacher_id" :options="teachers" optionLabel="name" optionValue="id" placeholder="Выберите преподавателя" class="w-100" />
+        <Select
+          v-model="form.teacher_id"
+          :options="teachers"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Выберите преподавателя"
+          class="w-100"
+        />
       </div>
       <div class="mb-3">
         <label class="form-label">Аудитория</label>
-        <Select v-model="form.classroom_id" :options="classrooms" optionLabel="number" optionValue="id" placeholder="Выберите аудиторию" class="w-100" />
+        <Select
+          v-model="form.classroom_id"
+          :options="classrooms"
+          optionLabel="number"
+          optionValue="id"
+          placeholder="Выберите аудиторию"
+          class="w-100"
+        />
       </div>
       <div class="mb-3">
         <label class="form-label">Номер пары</label>
-        <Select v-model="form.pair_number" :options="availablePairOptions" optionLabel="label" optionValue="value" class="w-100" />
+        <Select
+          v-model="form.pair_number"
+          :options="availablePairOptions"
+          optionLabel="label"
+          optionValue="value"
+          class="w-100"
+        />
       </div>
       <div class="d-flex gap-2 justify-content-end mt-4">
         <Button label="Отмена" severity="secondary" text @click="emit('cancel')" />

@@ -46,7 +46,7 @@ watch(
       })
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 function handleSubmit() {

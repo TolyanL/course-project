@@ -18,6 +18,9 @@ jobs:
       - name: Start services
         run: docker compose up -d --build --wait
 
+      - name: Run Go tests
+        run: go test ./...
+
       - name: Run API tests
         run: bash tests/api_test.sh
 

@@ -294,7 +294,13 @@ function generateDays(monday: Date, entries: ScheduleEntry[]): DayData[] {
                         </span>
                       </div>
                     </div>
-                    <div v-if="showActions && (adminMode || Number(pair.teacher_id) === Number(currentTeacherId))" class="pair-actions">
+                    <div
+                      v-if="
+                        showActions &&
+                        (adminMode || Number(pair.teacher_id) === Number(currentTeacherId))
+                      "
+                      class="pair-actions"
+                    >
                       <Button
                         icon="pi pi-pencil"
                         severity="info"

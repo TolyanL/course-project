@@ -20,7 +20,13 @@ const emit = defineEmits<{
     <div class="table-header mb-3">
       <Button label="Добавить" icon="pi pi-plus" @click="emit('add')" />
     </div>
-    <DataTable :value="data" :paginator="data.length > 10" :rows="10" stripedRows responsiveLayout="scroll">
+    <DataTable
+      :value="data"
+      :paginator="data.length > 10"
+      :rows="10"
+      stripedRows
+      responsiveLayout="scroll"
+    >
       <Column v-for="col in columns" :key="col.key" :field="col.key" :header="col.label" />
       <Column header="Действия" :exportable="false" style="width: 200px">
         <template #body="{ data }">

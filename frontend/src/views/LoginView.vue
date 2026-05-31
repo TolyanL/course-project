@@ -52,10 +52,25 @@ async function handleLogin() {
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Пароль</label>
-            <Password id="password" v-model="password" class="w-100" :feedback="false" toggleMask required inputClass="w-100" />
+            <Password
+              id="password"
+              v-model="password"
+              class="w-100"
+              :feedback="false"
+              toggleMask
+              required
+              inputClass="w-100"
+            />
           </div>
-          <Message v-if="error" severity="error" :closable="false" class="mb-3">{{ error }}</Message>
-          <Button type="submit" :loading="loading" :label="loading ? 'Вход...' : 'Войти'" class="w-100" />
+          <Message v-if="error" severity="error" :closable="false" class="mb-3">{{
+            error
+          }}</Message>
+          <Button
+            type="submit"
+            :loading="loading"
+            :label="loading ? 'Вход...' : 'Войти'"
+            class="w-100"
+          />
         </form>
       </template>
     </Card>

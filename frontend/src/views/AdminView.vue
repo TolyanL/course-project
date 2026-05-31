@@ -22,11 +22,36 @@ onUnmounted(() => {
 })
 
 const menuItems = [
-  { label: 'Расписание', icon: 'pi pi-calendar', route: '/admin/schedule', command: () => router.push('/admin/schedule') },
-  { label: 'Преподаватели', icon: 'pi pi-users', route: '/admin/teachers', command: () => router.push('/admin/teachers') },
-  { label: 'Предметы', icon: 'pi pi-book', route: '/admin/subjects', command: () => router.push('/admin/subjects') },
-  { label: 'Аудитории', icon: 'pi pi-home', route: '/admin/classrooms', command: () => router.push('/admin/classrooms') },
-  { label: 'Группы', icon: 'pi pi-users', route: '/admin/groups', command: () => router.push('/admin/groups') },
+  {
+    label: 'Расписание',
+    icon: 'pi pi-calendar',
+    route: '/admin/schedule',
+    command: () => router.push('/admin/schedule'),
+  },
+  {
+    label: 'Преподаватели',
+    icon: 'pi pi-users',
+    route: '/admin/teachers',
+    command: () => router.push('/admin/teachers'),
+  },
+  {
+    label: 'Предметы',
+    icon: 'pi pi-book',
+    route: '/admin/subjects',
+    command: () => router.push('/admin/subjects'),
+  },
+  {
+    label: 'Аудитории',
+    icon: 'pi pi-home',
+    route: '/admin/classrooms',
+    command: () => router.push('/admin/classrooms'),
+  },
+  {
+    label: 'Группы',
+    icon: 'pi pi-users',
+    route: '/admin/groups',
+    command: () => router.push('/admin/groups'),
+  },
 ]
 
 function isActive(itemRoute: string) {

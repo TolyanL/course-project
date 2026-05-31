@@ -9,7 +9,15 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
-import type { Group, Subject, Classroom, Teacher, Pair, PairFormData, ConflictResponse } from '@/types'
+import type {
+  Group,
+  Subject,
+  Classroom,
+  Teacher,
+  Pair,
+  PairFormData,
+  ConflictResponse,
+} from '@/types'
 import axios from 'axios'
 
 const confirm = useConfirm()
@@ -54,7 +62,20 @@ const weeks = computed<WeekOption[]>(() => {
     }
     const startStr = formatDate(monday)
     const endStr = formatDate(sunday)
-    const monthNames = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
+    const monthNames = [
+      'янв',
+      'фев',
+      'мар',
+      'апр',
+      'май',
+      'июн',
+      'июл',
+      'авг',
+      'сен',
+      'окт',
+      'ноя',
+      'дек',
+    ]
     const dayOfMonth = monday.getDate()
     const month = monthNames[monday.getMonth()]
     const weekNum = getWeekNumber(monday)
@@ -99,20 +120,17 @@ onMounted(async () => {
   }
 })
 
-watch(
-  [selectedGroupId, selectedWeek],
-  async () => {
-    if (!selectedGroupId.value || !selectedWeek.value) {
-      scheduleStore.entries = []
-      return
-    }
-    await scheduleStore.fetchSchedule({
-      group_id: selectedGroupId.value,
-      start_date: selectedWeek.value.start_date,
-      end_date: selectedWeek.value.end_date,
-    })
-  },
-)
+watch([selectedGroupId, selectedWeek], async () => {
+  if (!selectedGroupId.value || !selectedWeek.value) {
+    scheduleStore.entries = []
+    return
+  }
+  await scheduleStore.fetchSchedule({
+    group_id: selectedGroupId.value,
+    start_date: selectedWeek.value.start_date,
+    end_date: selectedWeek.value.end_date,
+  })
+})
 
 async function handleSave(data: PairFormData) {
   try {
@@ -222,7 +240,9 @@ const scheduleEntries = computed(() => {
 
     <template v-if="selectedGroupId">
       <div v-if="scheduleStore.loading" class="text-center py-4">Загрузка...</div>
-      <div v-else-if="scheduleStore.error" class="text-center py-4 text-danger">{{ scheduleStore.error }}</div>
+      <div v-else-if="scheduleStore.error" class="text-center py-4 text-danger">
+        {{ scheduleStore.error }}
+      </div>
       <ScheduleTable
         v-else
         :entries="scheduleEntries"
@@ -232,11 +252,14 @@ const scheduleEntries = computed(() => {
         @delete="handleDelete"
       />
     </template>
-    <div v-else class="text-center text-muted py-5">
-      Выберите группу для просмотра расписания
-    </div>
+    <div v-else class="text-center text-muted py-5">Выберите группу для просмотра расписания</div>
 
-    <Dialog v-model:visible="showEditor" :header="editingPair ? 'Редактирование пары' : 'Добавление пары'" :modal="true" class="schedule-dialog">
+    <Dialog
+      v-model:visible="showEditor"
+      :header="editingPair ? 'Редактирование пары' : 'Добавление пары'"
+      :modal="true"
+      class="schedule-dialog"
+    >
       <PairEditor
         ref="pairEditorRef"
         :is-edit="!!editingPair"
