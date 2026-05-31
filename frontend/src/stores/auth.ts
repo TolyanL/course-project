@@ -26,6 +26,12 @@ export const useAuthStore = defineStore('auth', () => {
       role.value = data.role
       localStorage.setItem('token', data.token)
       localStorage.setItem('role', data.role)
+
+      const payload = decodeTokenPayload(data.token)
+      if (payload?.user_id) {
+        teacherId.value = payload.user_id
+      }
+
       return { success: true }
     } catch (e) {
       let errorMessage = 'Ошибка входа'
@@ -38,6 +44,19 @@ export const useAuthStore = defineStore('auth', () => {
       }
       lastError.value = errorMessage
       return { success: false, error: errorMessage }
+    }
+  }
+
+  function decodeTokenPayload(
+    token: string,
+  ): { user_id?: number; login?: string; role?: string } | null {
+    try {
+      const parts = token.split('.')
+      if (parts.length !== 3 || !parts[1]) return null
+      const payload = JSON.parse(atob(parts[1]))
+      return payload
+    } catch {
+      return null
     }
   }
 
@@ -60,6 +79,14 @@ export const useAuthStore = defineStore('auth', () => {
     const storedRole = localStorage.getItem('role') as 'admin' | 'teacher' | null
     if (storedRole) {
       role.value = storedRole
+    }
+
+    const storedToken = localStorage.getItem('token')
+    if (storedToken && !teacherId.value) {
+      const payload = decodeTokenPayload(storedToken)
+      if (payload?.user_id) {
+        teacherId.value = payload.user_id
+      }
     }
   }
 

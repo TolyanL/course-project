@@ -10,6 +10,7 @@ const authStore = useAuthStore()
 
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 const role = computed(() => authStore.role)
+const name = computed(() => authStore.name)
 
 function logout() {
   authStore.logout()
@@ -35,8 +36,14 @@ function goToSchedule() {
         </template>
         <template #end>
           <div class="d-flex align-items-center gap-3">
-            <span v-if="role === 'admin'" class="text-white">Админ</span>
-            <span v-else-if="role === 'teacher'" class="text-white">Преподаватель</span>
+            <span v-if="role === 'admin'" class="text-white">
+              <i class="pi pi-crown"></i>
+              {{ name }}
+            </span>
+            <span v-else-if="role === 'teacher'" class="text-white">
+              <i class="pi pi-graduation-cap"></i>
+              {{ name }}
+            </span>
             <Button
               label="Выйти"
               icon="pi pi-sign-out"
@@ -89,4 +96,3 @@ body {
   padding: 1rem;
 }
 </style>
-
