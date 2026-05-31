@@ -30,19 +30,16 @@ export const useScheduleStore = defineStore('schedule', () => {
 
   async function addEntry(data: PairFormData) {
     const { data: response } = await scheduleApi.createEntry(data)
-    await fetchSchedule()
     return response.entry
   }
 
   async function updateEntry(id: number, data: PairFormData) {
     const { data: response } = await scheduleApi.updateEntry(id, data)
-    await fetchSchedule()
     return response.entry
   }
 
   async function deleteEntry(id: number) {
     await scheduleApi.deleteEntry(id)
-    await fetchSchedule()
   }
 
   return {
